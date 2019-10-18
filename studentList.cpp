@@ -1,9 +1,12 @@
 #include <iostream>
+#include <cstring>
+#include <cmath>
 
 using namespace std;
 
 void addStudent();
-int length(float number);
+int convertInt(char id[6]);
+bool checkDigit(char id[6]);
 
 struct Student{
 	char firstName[15];
@@ -13,35 +16,45 @@ struct Student{
 };
 
 int main() {
-	cout << length(3.12) << endl;
-	cout << length(0.11);
+	addStudent();
 	return 0;
 }
 
 void addStudent() {
+	char id[10];
 	Student student;
 	cout << "Please enter in the first name of the new student: ";
         cin >> student.firstName;
 	cout << "\nPlease enter in the last name of the new student: ";
 	cin >> student.lastName;
 	cout << "\nPlease enter in the student ID of the new student: ";
-	cin >> student.studentId;	
-	while(student.studentId < 100000 || student.studentId > 999999 || !isdigit(student.studentId)) {
-		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 456789, 172592): ";
-		cin >> student.studentId;
+	cin >> id;
+	while(strlen(id) != 6 || !checkDigit(id) || id < '100000' || id > '999999') {
+		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 823759, 135703): ";
+		cin >> id;
 	}
+	student.studentId = convertInt(id);		
 	cout << "\nPlease enter in the GPA of the new student: ";
 	cin >> student.gpa;
-	while(student.gpa < 0.01 || student.gpa > 5.00 || length(student.gpa) != 3) {
+	while(student.gpa < 0.01 || student.gpa > 5.00) {
 		cout << "\nPlease enter a valid GPA between 0 and 5 with 2 decimal points (e.g. 3.21, 0.34, 4.00): ";
 	}
 }
 
-int length(float number) {
-	int len = 0;
-	while (number != 0) {
-		number /= 10;
-		len++;
+int convertInt(char id[6]) {
+	int intId; 
+	for(int i = 0; i < 6; i++) {
+		intId = (int)((pow(10.0, 6.0 - i)*(id[i]-'0'));
 	}
-	return len;
+	return intId;
+}
+
+
+bool checkDigit(char id[6]) {
+	for(int i = 0; i < 6; i++) {
+		if(!isdigit(id[i])) {
+			return false;
+		}
+	}
+	return true;
 }
