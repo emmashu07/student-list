@@ -16,6 +16,14 @@ struct Student{
 };
 
 int main() {
+	char input[20];
+	cout << "Type HELP to display commands." << endl;
+	cin >> input;
+	if(strcmp(input,"HELP") == 0) {
+		cout << "Type ADD to input student information." << endl;
+		cout << "Type PRINT to display student information." << endl;
+		cout << "Type DELETE to delete student information." << endl;
+	}
 	addStudent();
 	return 0;
 }
