@@ -29,7 +29,7 @@ void addStudent() {
 	cin >> student.lastName;
 	cout << "\nPlease enter in the student ID of the new student: ";
 	cin >> id;
-	while(strlen(id) != 6 || !checkDigit(id) || id < '100000' || id > '999999') {
+	while(strlen(id) != 6 || !checkDigit(id)) {
 		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 823759, 135703): ";
 		cin >> id;
 	}
@@ -39,14 +39,17 @@ void addStudent() {
 	while(student.gpa < 0.01 || student.gpa > 5.00) {
 		cout << "\nPlease enter a valid GPA between 0 and 5 with 2 decimal points (e.g. 3.21, 0.34, 4.00): ";
 	}
+	cout << "The student's name is " << student.firstName << " " << student.lastName << "." << endl;
+	cout << "The student's ID is " << student.studentId << "." << endl;
+	cout << "The student's GPA is " << student.gpa << "." << endl;
 }
 
 int convertInt(char id[6]) {
 	int intId; 
 	for(int i = 0; i < 6; i++) {
-		intId = (int)((pow(10.0, 6.0 - i)*(id[i]-'0'));
+		intId += (int)((pow(10.0, 6.0 - i - 1))*(id[i]-'0'));	
 	}
-	return intId;
+	return intId - 6;
 }
 
 
