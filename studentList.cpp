@@ -5,6 +5,8 @@
 using namespace std;
 
 void addStudent();
+void printStudent();
+void deleteStudent();
 int convertInt(char id[6]);
 bool checkDigit(char id[6]);
 
@@ -17,14 +19,31 @@ struct Student{
 
 int main() {
 	char input[20];
+	bool running = true;
 	cout << "Type HELP to display commands." << endl;
-	cin >> input;
-	if(strcmp(input,"HELP") == 0) {
-		cout << "Type ADD to input student information." << endl;
-		cout << "Type PRINT to display student information." << endl;
-		cout << "Type DELETE to delete student information." << endl;
-	}
-	addStudent();
+	while (running) {
+		cin >> input;
+		if(strcmp(input,"HELP") == 0) {
+			cout << "Type ADD to input student information." << endl;
+			cout << "Type PRINT to display student information." << endl;
+			cout << "Type DELETE to delete student information." << endl;
+			cout << "Type QUIT to exit the program." << endl;
+		}
+		else if(strcmp(input,"ADD") == 0) {
+			addStudent();
+		}
+		else if(strcmp(input,"PRINT") == 0) {
+			printStudent();
+		}
+		else if(strcmp(input,"DELETE") == 0) {
+			deleteStudent();
+		}
+		else if(strcmp(input,"QUIT") == 0) {
+			running = false;
+		else {
+			cout << "Please enter in a valid command. Type HELP for help." << endl;
+		}	
+	}	
 	return 0;
 }
 
@@ -47,9 +66,18 @@ void addStudent() {
 	while(student.gpa < 0.01 || student.gpa > 5.00) {
 		cout << "\nPlease enter a valid GPA between 0 and 5 with 2 decimal points (e.g. 3.21, 0.34, 4.00): ";
 	}
+
 	cout << "The student's name is " << student.firstName << " " << student.lastName << "." << endl;
 	cout << "The student's ID is " << student.studentId << "." << endl;
 	cout << "The student's GPA is " << student.gpa << "." << endl;
+}
+
+void printStudent() {
+
+}
+
+void deleteStudent() {
+
 }
 
 int convertInt(char id[6]) {
