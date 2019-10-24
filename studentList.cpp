@@ -16,6 +16,11 @@ struct Student{ // What is stored inside of a student.
 	char lastName[15];
 	int studentId;
 	float gpa;
+
+	~Student() {
+		delete[] firstName;
+		delete[] lastName;
+	}
 };
 
 void readInStudent(Student *student);
@@ -116,7 +121,9 @@ void deleteStudent(vector<Student*> *studentList) {
     vector<Student*>::iterator it;
     for(it = studentList -> begin(); it < studentList -> end(); it++) {
         if((*it)->studentId == id) { // If the same ID as typed in, then delete the student.
-            studentList -> erase(studentList -> begin() + count);
+	    //delete (*it);
+            studentList -> erase(it);
+	    break;
         }
         count++; // With each iteration, increase count.
     }
