@@ -16,11 +16,6 @@ struct Student{ // What is stored inside of a student.
 	char lastName[15];
 	int studentId;
 	float gpa;
-
-	~Student() {
-		delete[] firstName;
-		delete[] lastName;
-	}
 };
 
 void readInStudent(Student *student);
@@ -30,6 +25,7 @@ void printStudentList(vector<Student*> *studentList);
 void deleteStudent(vector<Student*> *studentList);
 int convertInt(char id[6]);
 bool checkDigit(char id[6]);
+void releaseMemory(vector<Student*> *studentList);
 
 int main() {
     vector<Student*> *studentList = new vector<Student*>(); // List of all the students.
@@ -60,7 +56,7 @@ int main() {
 			cout << "Please enter in a valid command. Type HELP for help." << endl;
 		}	
 	}
-        
+    releaseMemory(studentList); 
 	return 0;
 }
 
@@ -109,8 +105,7 @@ void printStudent(Student *student) {
 
 void deleteStudent(vector<Student*> *studentList) {
     char input[10];
-    int id;
-    int count = 0; // Determine where to delete the student in the list when iterating through.
+    int id; 
     cout << "Please enter the student ID of the student you would like to delete: " << endl;
     cin >> input;
 	while(strlen(input) != 6 || !checkDigit(input)) {
@@ -121,11 +116,10 @@ void deleteStudent(vector<Student*> *studentList) {
     vector<Student*>::iterator it;
     for(it = studentList -> begin(); it < studentList -> end(); it++) {
         if((*it)->studentId == id) { // If the same ID as typed in, then delete the student.
-	    //delete (*it);
+            delete (*it);
             studentList -> erase(it);
 	    break;
-        }
-        count++; // With each iteration, increase count.
+        } 
     }
     cout << "Deleted." << endl;
 }
@@ -148,4 +142,9 @@ bool checkDigit(char id[6]) {
 	return true;
 }
 
-
+void releaseMemory(vector<Student*> *studentList) {
+    for(auto it = studentList -> begin(); it < studentList -> end(); it++) {
+        delete (*it);
+    }
+    delete studentList;
+}
