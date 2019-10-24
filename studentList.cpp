@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include <cmath>
 #include <vector>
@@ -16,17 +17,13 @@ void readInStudent(Student *student);
 void printStudent(Student *student);
 void addStudent(vector<Student*> *studentList);
 void printStudentList(vector<Student*> *studentList);
-void deleteStudent();
+void deleteStudent(vector<Student*> *studentList);
 int convertInt(char id[6]);
 bool checkDigit(char id[6]);
 
 int main() {
     vector<Student*> *studentList = new vector<Student*>();
-    for(int i = 0;i < 3; i++) {
-        addStudent(studentList);
-    }
-    printStudentList(studentList);
-	/*char input[20];
+	char input[20];
 	bool running = true;
 	cout << "Type HELP to display commands." << endl;
 	while (running) {
@@ -38,20 +35,22 @@ int main() {
 			cout << "Type QUIT to exit the program." << endl;
 		}
 		else if(strcmp(input,"ADD") == 0) {
-			addStudent();
+			addStudent(studentList);
 		}
 		else if(strcmp(input,"PRINT") == 0) {
-			printStudent();
+			printStudentList(studentList);
 		}
 		else if(strcmp(input,"DELETE") == 0) {
-			deleteStudent();
+			deleteStudent(studentList);
 		}
 		else if(strcmp(input,"QUIT") == 0) {
 			running = false;
+        }
 		else {
 			cout << "Please enter in a valid command. Type HELP for help." << endl;
 		}	
-	}*/	
+	}
+        
 	return 0;
 }
 
@@ -81,6 +80,7 @@ void addStudent(vector<Student*> *studentList) {
     Student *student = new Student();
     readInStudent(student);
     studentList -> push_back(student);
+    cout << "Added." << endl;
 }
 
 void printStudentList(vector<Student*> *studentList) {
@@ -88,9 +88,12 @@ void printStudentList(vector<Student*> *studentList) {
     for(it = studentList -> begin(); it < studentList -> end(); it++) {
         printStudent(*it);
     }
+    cout << "Printed." << endl;
 }
 
 void printStudent(Student *student) {
+    cout << fixed;
+    cout << setprecision(2);
     cout << student -> firstName << " " << student -> lastName << ", " << student -> studentId << ", " << student -> gpa << endl;
 }
 
@@ -98,6 +101,7 @@ void deleteStudent(vector<Student*> *studentList) {
     char input[10];
     int id;
     int count = 0;
+    cout << "Please enter the student ID of the student you would like to delete: " << endl;
     cin >> input;
 	while(strlen(input) != 6 || !checkDigit(input)) {
 		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 823759, 135703): ";
@@ -106,11 +110,12 @@ void deleteStudent(vector<Student*> *studentList) {
     id = convertInt(input);
     vector<Student*>::iterator it;
     for(it = studentList -> begin(); it < studentList -> end(); it++) {
-        if(*it -> studentId == id) {
+        if((*it)->studentId == id) {
             studentList -> erase(studentList -> begin() + count);
         }
         count++;
     }
+    cout << "Deleted." << endl;
 }
 
 int convertInt(char id[6]) {
