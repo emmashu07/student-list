@@ -1,3 +1,8 @@
+/*
+ * Emma Shu, 10/23/19: Add, print, and delete student information inside of a list of students.
+ * Information includes first name, last name, student ID, and GPA.
+ */
+
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -6,7 +11,7 @@
 
 using namespace std;
 
-struct Student{
+struct Student{ // What is stored inside of a student.
 	char firstName[15];
 	char lastName[15];
 	int studentId;
@@ -22,11 +27,11 @@ int convertInt(char id[6]);
 bool checkDigit(char id[6]);
 
 int main() {
-    vector<Student*> *studentList = new vector<Student*>();
+    vector<Student*> *studentList = new vector<Student*>(); // List of all the students.
 	char input[20];
 	bool running = true;
 	cout << "Type HELP to display commands." << endl;
-	while (running) {
+	while (running) { // When QUIT is typed, the loop will end and terminate the program.
 		cin >> input;
 		if(strcmp(input,"HELP") == 0) {
 			cout << "Type ADD to input student information." << endl;
@@ -62,11 +67,11 @@ void readInStudent(Student *student) {
 	cin >> student -> lastName;
 	cout << "\nPlease enter in the student ID of the new student: ";
 	cin >> id;
-	while(strlen(id) != 6 || !checkDigit(id)) {
+	while(strlen(id) != 6 || !checkDigit(id)) { // Restrictions to enter an ID.
 		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 823759, 135703): ";
 		cin >> id;
 	}
-	student -> studentId = convertInt(id);		
+	student -> studentId = convertInt(id); // Stored into the ID in the student.	
 	cout << "\nPlease enter in the GPA of the new student: ";
 	cin >> student -> gpa;
 	while(student -> gpa < 0.01 || student -> gpa > 5.00) {
@@ -78,29 +83,29 @@ void readInStudent(Student *student) {
 
 void addStudent(vector<Student*> *studentList) {
     Student *student = new Student();
-    readInStudent(student);
-    studentList -> push_back(student);
+    readInStudent(student); // The student has all the necessary information in the pointer.
+    studentList -> push_back(student); // Append filled in information student into the list of student.
     cout << "Added." << endl;
 }
 
 void printStudentList(vector<Student*> *studentList) {
     vector<Student*>::iterator it;
     for(it = studentList -> begin(); it < studentList -> end(); it++) {
-        printStudent(*it);
+        printStudent(*it); // Run through the list of students and print out all the student information.
     }
     cout << "Printed." << endl;
 }
 
 void printStudent(Student *student) {
-    cout << fixed;
-    cout << setprecision(2);
+    cout << fixed; 
+    cout << setprecision(2); // Accurate float to the 2 decimal points.
     cout << student -> firstName << " " << student -> lastName << ", " << student -> studentId << ", " << student -> gpa << endl;
 }
 
 void deleteStudent(vector<Student*> *studentList) {
     char input[10];
     int id;
-    int count = 0;
+    int count = 0; // Determine where to delete the student in the list when iterating through.
     cout << "Please enter the student ID of the student you would like to delete: " << endl;
     cin >> input;
 	while(strlen(input) != 6 || !checkDigit(input)) {
@@ -110,10 +115,10 @@ void deleteStudent(vector<Student*> *studentList) {
     id = convertInt(input);
     vector<Student*>::iterator it;
     for(it = studentList -> begin(); it < studentList -> end(); it++) {
-        if((*it)->studentId == id) {
+        if((*it)->studentId == id) { // If the same ID as typed in, then delete the student.
             studentList -> erase(studentList -> begin() + count);
         }
-        count++;
+        count++; // With each iteration, increase count.
     }
     cout << "Deleted." << endl;
 }
@@ -121,7 +126,7 @@ void deleteStudent(vector<Student*> *studentList) {
 int convertInt(char id[6]) {
 	int intId; 
 	for(int i = 0; i < 6; i++) {
-		intId += (int)((pow(10.0, 6.0 - i - 1))*(id[i]-'0'));	
+		intId += (int)((pow(10.0, 6.0 - i - 1))*(id[i]-'0')); // Create the 6-digit student ID.	
 	}
 	return intId - 6;
 }
@@ -130,7 +135,7 @@ int convertInt(char id[6]) {
 bool checkDigit(char id[6]) {
 	for(int i = 0; i < 6; i++) {
 		if(!isdigit(id[i])) {
-			return false;
+			return false; // Determine whether all the characters inside the string is a digit and can be converted.
 		}
 	}
 	return true;
