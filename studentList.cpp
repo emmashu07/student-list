@@ -1,14 +1,9 @@
 #include <iostream>
 #include <cstring>
 #include <cmath>
+#include <vector>
 
 using namespace std;
-
-void addStudent();
-void printStudent();
-void deleteStudent();
-int convertInt(char id[6]);
-bool checkDigit(char id[6]);
 
 struct Student{
 	char firstName[15];
@@ -17,8 +12,21 @@ struct Student{
 	float gpa;
 };
 
+void readInStudent(Student *student);
+void printStudent(Student *student);
+void addStudent(vector<Student*> *studentList);
+void printStudentList(vector<Student*> *studentList);
+void deleteStudent();
+int convertInt(char id[6]);
+bool checkDigit(char id[6]);
+
 int main() {
-	char input[20];
+    vector<Student*> *studentList = new vector<Student*>();
+    for(int i = 0;i < 3; i++) {
+        addStudent(studentList);
+    }
+    printStudentList(studentList);
+	/*char input[20];
 	bool running = true;
 	cout << "Type HELP to display commands." << endl;
 	while (running) {
@@ -43,41 +51,66 @@ int main() {
 		else {
 			cout << "Please enter in a valid command. Type HELP for help." << endl;
 		}	
-	}	
+	}*/	
 	return 0;
 }
 
-void addStudent() {
+void readInStudent(Student *student) {
 	char id[10];
-	Student student;
 	cout << "Please enter in the first name of the new student: ";
-        cin >> student.firstName;
+        cin >> student -> firstName;
 	cout << "\nPlease enter in the last name of the new student: ";
-	cin >> student.lastName;
+	cin >> student -> lastName;
 	cout << "\nPlease enter in the student ID of the new student: ";
 	cin >> id;
 	while(strlen(id) != 6 || !checkDigit(id)) {
 		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 823759, 135703): ";
 		cin >> id;
 	}
-	student.studentId = convertInt(id);		
+	student -> studentId = convertInt(id);		
 	cout << "\nPlease enter in the GPA of the new student: ";
-	cin >> student.gpa;
-	while(student.gpa < 0.01 || student.gpa > 5.00) {
+	cin >> student -> gpa;
+	while(student -> gpa < 0.01 || student -> gpa > 5.00) {
 		cout << "\nPlease enter a valid GPA between 0 and 5 with 2 decimal points (e.g. 3.21, 0.34, 4.00): ";
+        cin >> student -> gpa;
 	}
 
-	cout << "The student's name is " << student.firstName << " " << student.lastName << "." << endl;
-	cout << "The student's ID is " << student.studentId << "." << endl;
-	cout << "The student's GPA is " << student.gpa << "." << endl;
 }
 
-void printStudent() {
-
+void addStudent(vector<Student*> *studentList) {
+    Student *student = new Student();
+    readInStudent(student);
+    studentList -> push_back(student);
 }
 
-void deleteStudent() {
+void printStudentList(vector<Student*> *studentList) {
+    vector<Student*>::iterator it;
+    for(it = studentList -> begin(); it < studentList -> end(); it++) {
+        printStudent(*it);
+    }
+}
 
+void printStudent(Student *student) {
+    cout << student -> firstName << " " << student -> lastName << ", " << student -> studentId << ", " << student -> gpa << endl;
+}
+
+void deleteStudent(vector<Student*> *studentList) {
+    char input[10];
+    int id;
+    int count = 0;
+    cin >> input;
+	while(strlen(input) != 6 || !checkDigit(input)) {
+		cout << "\nPlease enter a valid, 6-digit student ID (e.g. 823759, 135703): ";
+		cin >> input;
+	}
+    id = convertInt(input);
+    vector<Student*>::iterator it;
+    for(it = studentList -> begin(); it < studentList -> end(); it++) {
+        if(*it -> studentId == id) {
+            studentList -> erase(studentList -> begin() + count);
+        }
+        count++;
+    }
 }
 
 int convertInt(char id[6]) {
@@ -97,3 +130,5 @@ bool checkDigit(char id[6]) {
 	}
 	return true;
 }
+
+
